@@ -532,6 +532,7 @@ footer{
         <!-- 베타 대기자 신청 폼 (구글 폼 임베드) -->
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8yQV2ZYqBZ9PZXGPHlGD7nGx1HoMtLjmnUQh40Efoz2Qdtg/viewform?embedded=true"
                 width="100%" height="1503" frameborder="0" marginheight="0" marginwidth="0"
+                loading="lazy"
                 title="Lumi 베타 대기자 신청">로드 중…</iframe>
       </div>
     </div>
@@ -560,5 +561,16 @@ footer{
 })();
 </script>
 
+<script>
+  /* 구글 폼 iframe이 로드되며 화면을 폼 위치로 끌어내리는 것 방지 —
+     페이지 진입 시 항상 맨 위에서 시작 (단, #signup 등 앵커로 직접 온 경우는 존중) */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function () {
+    if (!location.hash) {
+      window.scrollTo(0, 0);
+      setTimeout(function () { if (!location.hash) window.scrollTo(0, 0); }, 250);
+    }
+  });
+</script>
 </body>
 </html>
