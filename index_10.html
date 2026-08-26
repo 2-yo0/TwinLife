@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ===================================================================
+     Lumi 검증용 랜딩페이지 v0.8
+     -------------------------------------------------------------------
+     배포 전 바꿀 곳 3군데는 [교체] 를 검색하세요.
+     1) [교체 1] 방 스크린샷
+     2) [교체 2] 구글 폼
+     3) [교체 3] 방문자 수 세는 스크립트
+     =================================================================== -->
+
+<title>Lumi — 숫자 말고, 나를 남기는 가계부 + 라이프로그</title>
+<meta name="description" content="얼마 썼는지는 이미 알아요. 왜 썼는지를 남겨요. 한 달이 지나면 방이 대신 한 달을 말해줍니다. 베타 대기자 모집.">
+
+<meta property="og:title" content="Lumi — 숫자 말고, 나를 남기는 가계부 + 라이프로그">
+<meta property="og:description" content="얼마 썼는지는 이미 알아요. 왜 썼는지를 남겨요. 베타 대기자 모집 중.">
+<meta property="og:type" content="website">
+<!-- [교체 1-b] 공유용 이미지 (1200x630)
+<meta property="og:image" content="https://아이디.github.io/폴더명/og.png"> -->
+
+<!-- 방문자 수 집계 — GoatCounter (대시보드: https://lumi.goatcounter.com) -->
+<script data-goatcounter="https://lumi.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+<!-- 본문: Pretendard (동적 서브셋 — 실제 쓰는 글자만 내려받아 가볍습니다) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+
+<style>
+/* 제목: Paperlogy — SIL 오픈폰트 라이선스. 굵기 3종만 불러옵니다. */
+@font-face{ font-family:'Paperlogy'; src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face{ font-family:'Paperlogy'; src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+@font-face{ font-family:'Paperlogy'; src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+
+:root{
+  --night:      #1B1712;
+  --night-soft: #26211A;
+  --night-line: #3A3229;
+  --ivory:      #FFFBEE;
+  --ivory-dim:  #A79E8A;
+  --gold:       #D6B87C;
+  --flame:      #FF631A;
+
+  /* 제목은 Paperlogy, 본문은 Pretendard */
+  --display: 'Paperlogy', 'Pretendard Variable', -apple-system, sans-serif;
+  --body: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+
+body{
+  background: var(--night);
+  color: var(--ivory);
+  font-family: var(--body);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: -.005em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before{
+  content:'';
+  position: fixed;
+  top: -20vh; left: 50%;
+  width: 120vw; height: 80vh;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(214,184,124,.10), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap{ position:relative; z-index:1; width:min(1040px,90vw); margin:0 auto; }
+
+/* ---------- 타이포 ---------- */
+.eyebrow{
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--gold);
+  display: inline-block;
+  padding: 7px 17px;
+  border: 1px solid rgba(214,184,124,.35);
+  border-radius: 999px;
+  background: rgba(214,184,124,.06);
+}
+
+h1{
+  font-family: var(--display);
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -.03em;
+  margin: 26px 0 0;
+}
+h2{
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: -.03em;
+  margin-bottom: 18px;
+}
+h3{
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -.02em;
+  margin-bottom: 12px;
+  color: var(--gold);
+}
+
+.lead{ font-size: 18px; color: rgba(255,251,238,.88); margin-top: 18px; }
+.dim{ color: var(--ivory-dim); }
+.hl{ color: var(--flame); }
+
+/* ---------- 히어로 ---------- */
+.hero{
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 56px;
+  align-items: center;
+  padding: 100px 0 90px;
+}
+
+.hero-hook{
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -.02em;
+  color: var(--gold);
+  margin-top: 22px;
+}
+
+.hero-cta{ margin-top: 34px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+
+.btn{
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  display: inline-block;
+  padding: 12px 30px;
+  background: var(--gold);
+  color: #2A2117;
+  text-decoration: none;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(214,184,124,.20);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 26px rgba(214,184,124,.30); }
+.btn:focus-visible{ outline: 3px solid var(--ivory); outline-offset: 3px; }
+
+.note{ font-size: 14px; line-height:1.6; color: var(--ivory-dim); }
+
+/* ---------- 캐릭터 말풍선 ---------- */
+.say{ margin-top: 26px; display:flex; align-items:center; gap:14px; }
+.say-avatar{
+  flex: 0 0 auto;
+  line-height: 0;
+  animation: float 4.5s ease-in-out infinite;
+}
+.say-avatar img{
+  width: 112px; height: auto; display:block;
+  image-rendering: pixelated;
+  /* 머리색이 배경과 비슷해서 은은한 빛으로 실루엣을 띄웁니다 */
+  filter: drop-shadow(0 0 18px rgba(214,184,124,.30)) drop-shadow(0 12px 18px rgba(0,0,0,.45));
+}
+@keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }
+.bubble{
+  position: relative;
+  max-width: 340px;
+  background: transparent;
+  border: 1px solid rgba(214,184,124,.38);
+  border-radius: 20px;
+  padding: 14px 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ivory-dim);
+  text-align: left;
+}
+/* 꼬리 — 정사각형을 45도 돌려 두 변만 선으로 남깁니다 */
+.bubble::before{
+  content:''; position:absolute; left:-7px; top:50%; margin-top:-7px;
+  width:14px; height:14px;
+  background: var(--night);
+  border-left: 1px solid rgba(214,184,124,.38);
+  border-bottom: 1px solid rgba(214,184,124,.38);
+  transform: rotate(45deg);
+}
+
+.phone{
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  aspect-ratio: 1080 / 1345;
+  background: var(--night-soft);
+  border: 2px solid var(--night-line);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  overflow: hidden;
+}
+.phone img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.phone-empty{
+  height:100%;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding: 24px;
+  border: 1px dashed rgba(214,184,124,.3);
+  margin: 10px;
+  border-radius: 16px;
+  font-size: 14px;
+  color: var(--gold);
+  line-height: 2;
+}
+
+/* ---------- 섹션 ---------- */
+section{ padding: 92px 0; }
+.section-line{ border-top: 1px solid var(--night-line); }
+
+.claims{ display:flex; flex-direction:column; gap:34px; margin-top:42px; }
+.claim{ border-left:2px solid var(--night-line); padding-left:28px; }
+.claim.turn{ border-left-color: var(--gold); }
+.claim b{
+  font-family: var(--display);
+  display:block; font-size:23px; font-weight:600;
+  line-height:1.5; letter-spacing:-.025em; margin-bottom:8px;
+}
+.claim.turn b{ color: var(--gold); }
+.claim p{ font-size:16px; line-height:1.85; opacity:.8; }
+
+.quotes{ display:flex; flex-direction:column; gap: 16px; margin-top: 34px; }
+.quote{
+  padding: 22px 26px;
+  background: var(--night-soft);
+  border-left: 3px solid var(--night-line);
+  border-radius: 16px;
+  font-size: 17px;
+}
+.quote span{ display:block; margin-top:6px; font-size:14px; color: var(--ivory-dim); }
+
+.punch{
+  font-family: var(--display);
+  margin-top: 38px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.65;
+  letter-spacing: -.02em;
+  color: var(--gold);
+}
+
+.cards{ display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 42px; }
+.card{
+  background: var(--night-soft);
+  border: 1px solid var(--night-line);
+  border-radius: 18px;
+  padding: 30px 26px;
+}
+.card p{ font-size: 15px; line-height:1.85; color: rgba(255,251,238,.82); }
+
+.tags{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 32px; }
+.tag{
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(214,184,124,.4);
+  color: var(--gold);
+  background: rgba(214,184,124,.05);
+}
+.tag.q{ color: var(--ivory-dim); border-color: var(--night-line); background: transparent; }
+
+.sorts{ margin-top: 26px; display:grid; gap:1px; background: var(--night-line); border:1px solid var(--night-line); border-radius:18px; overflow:hidden; }
+.sort{
+  display:grid; grid-template-columns: 150px 1fr; gap: 20px;
+  background: var(--night-soft); padding: 22px 26px; align-items:center;
+}
+.sort b{ font-family: var(--display); font-size: 16px; font-weight:600; color: var(--gold); letter-spacing:-.01em; }
+.sort span{ font-size: 16px; opacity:.85; }
+
+.why{ border-left: 3px solid var(--gold); padding: 4px 0 4px 32px; max-width: 720px; }
+.why p{ font-size: 20px; line-height: 1.9; }
+.why .sign{ margin-top: 18px; font-size: 14px; color: var(--ivory-dim); }
+
+.cta-box{
+  background: var(--night-soft);
+  border: 1px solid rgba(214,184,124,.45);
+  border-radius: 24px;
+  padding: 58px 44px;
+  text-align: center;
+}
+.cta-box h2{ color: var(--ivory); }
+.form-slot{
+  margin-top: 30px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.form-slot iframe{ width:100%; border:none; }
+
+/* 가격 안내 — 지불 의사 검증용. 무료 범위를 함께 보여줘
+   '돈 내야 쓰는 앱'으로 읽히지 않게 합니다. */
+.price-note{
+  margin: 30px auto 0;
+  max-width: 460px;
+  padding: 20px 24px;
+  border: 1px solid rgba(214,184,124,.28);
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.95;
+  color: var(--ivory-dim);
+  text-align: center;
+}
+.price-note b{ color: var(--gold); font-weight: 600; }
+.price-note .free{ color: var(--ivory); font-weight: 500; }
+@media (max-width: 860px){
+  .price-note{ padding: 18px 18px; font-size: 14px; }
+}
+
+footer{
+  padding: 46px 0 64px;
+  border-top: 1px solid var(--night-line);
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ivory-dim);
+  text-align:center;
+}
+
+.reveal{ opacity:0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.on{ opacity:1; transform:none; }
+
+/* ---------- 모바일 ---------- */
+@media (max-width: 860px){
+  body{ font-size:16px; }
+  .hero{ grid-template-columns:1fr; gap:40px; padding:60px 0 52px; text-align:center; }
+  .hero-cta{ justify-content:center; }
+  .say{ justify-content:center; }
+  .say-avatar img{ width:92px; }
+  .bubble{ max-width:none; }
+  h1{ font-size: 33px; }
+  h2{ font-size: 25px; }
+  .hero-hook{ font-size:18px; }
+  .punch{ font-size:20px; }
+  .cards{ grid-template-columns:1fr; }
+  .sort{ grid-template-columns:1fr; gap:6px; }
+  section{ padding:62px 0; }
+  .cta-box{ padding:40px 22px; }
+  .why{ padding-left:22px; }
+  .claim{ padding-left:18px; }
+  .claim b{ font-size:19px; }
+  .why p{ font-size:17px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+  .say-avatar{ animation:none; }
+  html{ scroll-behavior:auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <span class="eyebrow">2026년 겨울 · 베타 대기자 모집</span>
+      <h1>숫자 말고, 나를 남기는<br>가계부 + 라이프로그</h1>
+      <p class="hero-hook">내 하루에 가장 가까운 기록은<br>일기가 아니라 지출 내역이에요.</p>
+      <p class="lead">거기엔 이미 내가 다 적혀 있어요.<br>
+      <span class="hl">Lumi</span>는 지출을 <span class="hl">돈이 아니라 사람</span>으로 읽어요.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#signup">베타 대기자 신청하기</a>
+      </div>
+
+      <!-- 말풍선 — 캐릭터 그림은 아래 img 안에 통째로 들어 있습니다 (별도 파일 불필요) -->
+      <div class="say">
+        <div class="say-avatar"><img alt="Lumi 캐릭터" src="data:image/png;base64,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"></div>
+        <p class="bubble">아직 만드는 중이에요.<br>가장 먼저 써보실 분을 찾고 있어요.</p>
+      </div>
+    </div>
+
+    <div class="phone">
+      <!-- [교체 1] 완료 — room.png 를 index.html 과 같은 폴더에 넣으면 됩니다. -->
+      <img src="room.png" alt="Lumi 방 화면 — 예산 초과로 옷장이 흘러넘친 모습과 지출 내역">
+    </div>
+  </header>
+</div>
+
+<div class="wrap section-line">
+  <section>
+    <div class="reveal">
+      <span class="eyebrow">한 번쯤 생각해보신 적 있나요</span>
+      <h2 style="margin-top:22px">어제 뭘 했는지는 흐릿해도<br>카드 내역은 다 남아 있어요.</h2>
+    </div>
+
+    <div class="claims reveal">
+      <div class="claim">
+        <b>지출 내역은 내 하루에 가장 가까운 기록이에요.</b>
+        <p>몇 시에, 어디에서, 무엇을 골랐는지가 매일 저절로 남아요. 일기는 쓸 마음이 든 날만 남고 그마저 조금 미화되지만, 결제는 빠짐없이 정직하게 남습니다.</p>
+      </div>
+      <div class="claim">
+        <b>내가 돈을 쓴 곳이 곧 내 관심사예요.</b>
+        <p>취향의 가장 직관적 지표는 결제로 드러나요. 무엇을 좋아하고 무엇에 마음이 흔들리는 사람인지, 이미 그 목록 안에 다 들어 있어요.</p>
+      </div>
+      <div class="claim turn">
+        <b>그런데 그 기록을 가진 모든 앱이<br>그걸 돈으로만 읽어요.</b>
+        <p>합계, 예산, 절약률, 지난달 대비 몇 퍼센트. 세상에서 나에게 가장 가까운 기록인데, 아무도 사람으로 읽어주지 않았어요.</p>
+      </div>
+    </div>
+
+    <p class="punch reveal">같은 기록이에요.<br>읽는 도구가 없었을 뿐이에요.</p>
+  </section>
+</div>
+
+<div class="wrap section-line">
+  <section>
+    <div class="reveal">
+      <span class="eyebrow">이런 적 있으신가요</span>
+      <h2 style="margin-top:22px">가계부는 이미 다 있어요.<br>그런데 거기에는 내가 없어요.</h2>
+    </div>
+
+    <div class="quotes reveal">
+      <div class="quote">2주는 꼬박 적었어요. 그러다 어느 순간, 적어야 한다는 사실조차 잊었어요.
+        <span>— 그리고 다시 새 앱을 깔았죠</span></div>
+      <div class="quote">다 적고 나서도, 내가 왜 그걸 샀는지는 모르겠더라고요.
+        <span>— 숫자는 남았는데 이유는 안 남아서</span></div>
+      <div class="quote">밀린 빈칸을 보면 죄책감이 들어요. 결국 앱을 지웠어요.
+        <span>— 기록이 숙제가 된 순간</span></div>
+    </div>
+
+    <p class="punch reveal">자동 연동은 "적기 귀찮다"를 풀었어요.<br>
+    그런데 "적어봤자 남는 게 없다"는 아무도 안 풀었어요.</p>
+  </section>
+</div>
+
+<div class="wrap section-line">
+  <section>
+    <div class="reveal">
+      <span class="eyebrow">쌓이면 이런 게 달라져요</span>
+      <h2 style="margin-top:22px">기록이 늘어나는 게 아니라<br><span class="hl">내가 남아요.</span></h2>
+    </div>
+
+    <div class="cards reveal">
+      <div class="card">
+        <h3>내가 뭘 좋아하는지<br>알게 돼요</h3>
+        <p>아끼는 데 익숙한 사람일수록 자기 취향이 흐려져요. 이유가 붙은 기록이 쌓이면, 나를 살아있게 했던 게 무엇이었는지 방이 대신 알려줘요.</p>
+      </div>
+      <div class="card">
+        <h3>며칠 비워도<br>돌아올 수 있어요</h3>
+        <p>끊긴 연속 기록도, 채우라는 알림도 없어요. 방을 열어보고 그냥 나가도 괜찮아요. 그만둘 일이 없으니 나를 탓할 일도 없어요.</p>
+      </div>
+      <div class="card">
+        <h3>숫자를 읽지 않아도<br>한 달이 보여요</h3>
+        <p>옷장이 가득 차 있으면 옷을 많이 샀다는 뜻이에요. 표를 훑고 계산할 필요 없이, 방에 들어선 순간 <span class="hl">한 달이 한눈에 들어와요.</span></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap section-line">
+  <section>
+    <div class="reveal">
+      <span class="eyebrow">지출에 붙는 이유</span>
+      <h2 style="margin-top:22px">우리는 이미 알고 있어요.<br>그 돈을 왜 썼는지.</h2>
+      <p class="lead dim">그냥 어디에도 적을 곳이 없었을 뿐이에요.</p>
+    </div>
+
+    <div class="tags reveal">
+      <span class="tag">시발비용</span>
+      <span class="tag">멍청비용</span>
+      <span class="tag">홀린비용</span>
+      <span class="tag q">추억</span>
+      <span class="tag q">취향</span>
+      <span class="tag q">토닥토닥</span>
+      <span class="tag q">의리비용</span>
+      <span class="tag q">생존</span>
+    </div>
+
+    <div class="reveal">
+      <p class="punch" style="margin-top:56px">지출이 늘었는지 줄었는지는 숫자가 말해줘요.<br>
+      <span class="hl">어떤 한 달을 살았는지는 방이 보여줘요.</span></p>
+      <p class="lead">표는 읽고 해석해야 알지만, 방은 문을 여는 순간 알아요.<br>
+      그냥 흘러가버렸을 한 달이, 눈으로 볼 수 있는 모양으로 남습니다.</p>
+      <div class="sorts">
+        <div class="sort"><b>남는 것</b><span>옷, 신발, 화장품 등 사치품 — 방 안에 자리를 잡아요</span></div>
+        <div class="sort"><b>기억되는 것</b><span>친구와 외식, 여행, 산책하며 처음 들른 카페가 좋았던 순간 — 벽에 액자로 걸려요</span></div>
+        <div class="sort"><b>지나가는 것</b><span>커피, 택시, 배달 등 무의미한 것 — 휴지통에 모여요</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap section-line">
+  <section>
+    <div class="why reveal">
+      <span class="eyebrow">만드는 이유</span>
+      <p style="margin-top:22px">지출은 하루 중 가장 많은 선택이 일어나는 순간이에요.<br>
+      그래서 어떤 기록보다 내가 잘 드러나 있어요.<br><br>
+      아끼느라 자꾸 자기를 뒤로 미루는 사람이,<br>
+      지나간 자리를 보다가 자신을 깨닫고 사랑하는 방법이 되었으면 해요.</p>
+      <p class="sign">— Lumi를 만들고 있습니다</p>
+    </div>
+  </section>
+</div>
+
+<div class="wrap section-line">
+  <section id="signup">
+    <div class="cta-box reveal">
+      <span class="eyebrow">베타 대기자 신청</span>
+      <h2 style="margin-top:22px">가장 먼저 방에<br>들어와 주실래요?</h2>
+      <p class="lead dim" style="max-width:520px;margin-left:auto;margin-right:auto">
+        베타가 열리면 신청해 주신 분들께 가장 먼저 알려드릴게요.<br>
+        이메일이나 카톡 아이디 하나만 남겨주시면 돼요. 30초면 끝나요.
+      </p>
+
+      <div class="price-note">
+        <span class="free">기록하고, 태그 붙이고, 이번 달을 돌아보는 건 계속 무료예요.</span><br>
+        지난 기록 비교와 감정 추이, 연간 회고는<br>
+        출시 후 <b>월 3,900원</b>으로 열릴 예정이에요.
+      </div>
+
+      <div class="form-slot">
+        <!-- 베타 대기자 신청 폼 (구글 폼 임베드) -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf8yQV2ZYqBZ9PZXGPHlGD7nGx1HoMtLjmnUQh40Efoz2Qdtg/viewform?embedded=true"
+                width="100%" height="1503" frameborder="0" marginheight="0" marginwidth="0"
+                title="Lumi 베타 대기자 신청">로드 중…</iframe>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    Lumi · 개발 중인 서비스입니다<br>
+    남겨주신 이메일은 베타 오픈 안내에만 사용하고, 그 외 어디에도 쓰지 않아요.
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    items.forEach(function(el){ el.classList.add('on'); }); return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, { threshold: .12 });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
